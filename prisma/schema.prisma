@@ -1,0 +1,63 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  APPROVER
+  ENTRY_CLERK
+}
+
+enum EntryType {
+  IN
+  OUT
+}
+
+enum EntryStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  password      String
+  role          Role           @default(ENTRY_CLERK)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  entries       InventoryEntry[] @relation("CreatedBy")
+  approvals     InventoryEntry[] @relation("ApprovedBy")
+}
+
+model InventoryEntry {
+  id              String      @id @default(cuid())
+  date            DateTime
+  type            EntryType
+  productName     String
+  description     String?
+  quantity        Float
+  unit            String      @default("pcs")
+  issuedBy        String
+  reason          String
+  status          EntryStatus @default(PENDING)
+  remarks         String?
+
+  createdById     String
+  createdBy       User        @relation("CreatedBy", fields: [createdById], references: [id])
+
+  approvedById    String?
+  approvedBy      User?       @relation("ApprovedBy", fields: [approvedById], references: [id])
+  approvedAt      DateTime?
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
