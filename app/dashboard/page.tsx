@@ -1,4 +1,6 @@
 // app/dashboard/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -65,7 +67,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-5">
-      {/* Welcome */}
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
           Welcome back, {user.name?.split(' ')[0]} 👋
@@ -77,7 +78,6 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      {/* Stats — 1 col on mobile, 3 on sm+ */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         {stats.map((stat) => (
           <div key={stat.label} className={`card border p-4 sm:p-5 ${stat.bg}`}>
@@ -92,7 +92,6 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      {/* Role notice */}
       <div className={`rounded-lg px-4 py-3 text-sm border flex items-start gap-2 ${
         user.role === 'ENTRY_CLERK'
           ? 'bg-blue-50 border-blue-200 text-blue-700'
@@ -110,7 +109,6 @@ export default async function DashboardPage() {
         </span>
       </div>
 
-      {/* Recent Entries */}
       <div className="card overflow-hidden">
         <div className="px-4 sm:px-5 py-4 border-b border-slate-100 flex items-center justify-between">
           <h2 className="font-semibold text-slate-800">Recent Entries</h2>
