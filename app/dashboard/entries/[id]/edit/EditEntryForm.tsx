@@ -4,6 +4,14 @@ import { useState, useTransition } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { NextResponse } from 'next/server';
+
+export async function PATCH() {
+  return NextResponse.json({
+    success: true,
+  });
+}
+
 export default function EditEntryForm({
   entry,
 }: {
@@ -28,7 +36,7 @@ export default function EditEntryForm({
 
     startTransition(async () => {
       const res = await fetch(
-        `/api/entries/${entry.id}`,
+        `/dashboard/entries/${entry.id}`,
         {
           method: 'PATCH',
 
